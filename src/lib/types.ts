@@ -56,4 +56,5 @@ export interface CartProductView {
   discount_percentage: number;
   image: string;
   quantity: string;
+  stock: number;
 }

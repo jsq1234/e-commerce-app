@@ -1,6 +1,7 @@
 // require('dotenv').config({ path: '.env.local' });
 const { sql } = require("@vercel/postgres");
-const { random, Random } = require("random-js");
+const { Random } = require("random-js");
+const bcrpyt = require('bcrypt');
 
 async function createTables() {
   try {
@@ -22,6 +23,10 @@ async function createTables() {
     }
 
     console.log("Deleted all tables!");
+
+    await sql.query(`DROP VIEW IF EXISTS "cart_products_view";`);
+
+    console.log("Dropped view");
 
     // Create tables in order of dependencies
     await sql`
@@ -79,7 +84,8 @@ async function createTables() {
         product_id INTEGER REFERENCES products(id) ON DELETE CASCADE,
         quantity INTEGER NOT NULL CHECK (quantity > 0),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE (user_id, product_id)
       )
     `;
 
@@ -87,7 +93,7 @@ async function createTables() {
 
     await sql`
       CREATE VIEW cart_products_view AS
-        SELECT c.user_id, p.id as product_id, p.title, p.price, c.quantity, p.image, p.discount_percentage FROM cart_items c JOIN products p ON p.id = c.product_id;
+        SELECT c.user_id, p.id as product_id, p.title, p.price, p.stock, c.quantity, p.image, p.discount_percentage FROM cart_items c JOIN products p ON p.id = c.product_id;
     `;
 
     console.log("Created cart-product view succesfully!");
@@ -105,13 +111,17 @@ async function seedDatabase() {
   await Promise.all(
     products.map((product) => {
       const randomInt = new Random().integer(20, 100);
-      console.log(product.discountPercentage);
       return sql`INSERT INTO products(title, price, discount_percentage, image, stock)
       VALUES (${product.title}, ${product.price}, ${
         product.discountPercentage ?? 0
       }, ${product.images[0]}, ${randomInt}) ON CONFLICT (id) DO NOTHING;`;
     })
   );
+
+  const hashedPassword = await bcrpyt.hash('123456', 10);
+  await sql`INSERT INTO users(first_name, last_name, email, phone_number, password_hash) VALUES('user', '1', 'user@gmail.com', '+911111111111', ${hashedPassword}) ON CONFLICT (id) DO NOTHING`;
+
+  console.log("inserted user!");
 }
 
 (async function () {

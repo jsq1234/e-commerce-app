@@ -3,7 +3,6 @@ import Link from "next/link";
 import SearchBar from "../ui/SearchBar";
 import ShoppingCart from "../ui/ShoppingCart";
 import { FaHeart, FaUser } from "react-icons/fa";
-import CartCountProvider from "@/context/CartCountProvider";
 
 const navItems = [
   { name: "Shop", link: "/shop" },
@@ -37,7 +36,9 @@ export default function Navbar() {
       </ul>
       <div className="flex-between lg:space-x-5 md:space-x-3 space-x-2 text-lg">
         <SearchBar />
-        <ShoppingCart />
+        <Link href="/cart">
+          <ShoppingCart />
+        </Link>
         <FaHeart />
         <FaUser />
       </div>

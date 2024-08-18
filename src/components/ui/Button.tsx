@@ -1,19 +1,22 @@
 "use client";
-import React from "react";
+import React, { ButtonHTMLAttributes } from "react";
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  className?: string;
+}
 
 export default function Button({
-  type,
-  className,
+  type = "button",
+  className = "",
   children,
-  onClick
-}: {
-  type?: "submit" | "reset" | "button";
-  className?: string;
-  children?: React.ReactNode;
-  onClick: React.MouseEventHandler<HTMLButtonElement> | undefined
-}) {
+  ...props
+}: ButtonProps) {
   return (
-    <button type={type} className={`py-2 px-4 rounded-lg bg-rose-600 hover:bg-rose-500 text-white focus:border-rose-700 ${className}`} onClick={onClick}>
+    <button
+      type={type}
+      className={`py-2 px-4 rounded-lg bg-rose-600 hover:bg-rose-500 text-white focus:border-rose-700 disabled:bg-gray-400 ${className}`}
+      {...props}
+    >
       {children}
     </button>
   );
