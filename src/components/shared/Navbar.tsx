@@ -3,6 +3,7 @@ import Link from "next/link";
 import SearchBar from "../ui/SearchBar";
 import ShoppingCart from "../ui/ShoppingCart";
 import { FaHeart, FaUser } from "react-icons/fa";
+import CartCountProvider from "@/context/CartCountProvider";
 
 const navItems = [
   { name: "Shop", link: "/shop" },
@@ -13,14 +14,23 @@ const navItems = [
 
 export default function Navbar() {
   return (
-    <nav className="flex-between bg-amber-950 text-white sticky px-4 py-2 space-x-4">
+    <nav className="flex-between bg-rose-100 sticky px-4 py-2 space-x-4 border border-b-red-400">
       <div className="md:flex-between flex items-center lg:gap-6 gap-2  md:grow-0 grow">
-        <img src="/shop-logo.png" alt="logo" className="w-11 h-11 lg:w-16 lg:h-16" />
-        <h1 className="tracking-wider font-semibold lg:text-2xl text-md">ShopKart</h1>
+        <img
+          src="/shop-logo.png"
+          alt="logo"
+          className="w-11 h-11 lg:w-16 lg:h-16"
+        />
+        <h1 className="tracking-wider font-semibold lg:text-2xl text-md">
+          ShopKart
+        </h1>
       </div>
       <ul className="md:flex-between md:gap-2 md:grow hidden">
         {navItems.map(({ name, link }, idx) => (
-          <li key={idx} className="rounded-md py-2 xl:px-8 px-4 xl:text-lg lg:text-lg text-sm min-w-fit hover:bg-amber-600 transition-all duration-400">
+          <li
+            key={idx}
+            className="rounded-md py-2 xl:px-8 px-4 xl:text-lg lg:text-lg text-sm min-w-fit hover:bg-rose-300 transition-all duration-400"
+          >
             <Link href={link}>{name}</Link>
           </li>
         ))}

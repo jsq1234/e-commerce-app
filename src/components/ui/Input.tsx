@@ -10,7 +10,7 @@ export default function Input({
   return (
     <input
       name={name}
-      className={`border-2 border-amber-400 text-sm leading-8 rounded-md px-2 py-1 outline-none bg-orange-100 focus:bg-orange-200 hover:bg-orange-200 ${className}`}
+      className={`border-2 border-red-300 text-sm leading-8 rounded-md px-2 py-1 outline-none bg-rose-100 focus:bg-rose-50 ${className}`}
     />
   );
 }

@@ -3,6 +3,7 @@ import { Merriweather } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/shared/Navbar";
 import Footbar from "@/components/shared/Footbar";
+import CartCountProvider from "@/context/CartCountProvider";
 
 const merriweather = Merriweather({
   weight: ["400", "700"],
@@ -21,11 +22,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${merriweather.className} bg-amber-100`}>
-        <header>
-          <Navbar></Navbar>
-        </header>
-        <main className="w-[80%] p-4 h-screen border border-gray-200 ml-auto">{children}</main>
+      <body className={`${merriweather.className} bg-rose-50`}>
+        <CartCountProvider>
+          <header>
+            <Navbar></Navbar>
+          </header>
+          <main className="w-[80%] p-4 min-h-screen border border-l-red-400 ml-auto flex justify-center">
+            {children}
+          </main>
+        </CartCountProvider>
         <footer>
           <Footbar></Footbar>
         </footer>
